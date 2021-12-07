@@ -18,17 +18,31 @@ const useField = (type) => {
 const useCountry = (name) => {
   const [country, setCountry] = useState(null)
 
-  useEffect(() => {})
 
+  useEffect(
+    () => {
+      if (name) {
+        const url = `https://restcountries.com/v2/name/${name}?fullText=true`
+    
+        axios.get(url)
+          .then(response => {
+            setCountry({
+              data: response.data[0]
+            })
+          })
+          
+      }
+  }, [name])
   return country
 }
 
 const Country = ({ country }) => {
+  console.log(country)
   if (!country) {
     return null
   }
 
-  if (!country.found) {
+  if (country.data === undefined) {
     return (
       <div>
         not found...
